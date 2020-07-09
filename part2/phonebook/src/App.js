@@ -8,11 +8,9 @@ const Notification = ({text}) => {
   if(text.message === null) {
     return null
   }
-  if(text.category === 'error') {
-    return <div className="error">{text}</div>
-  }
-  
-  return <div className="success">{text}</div>
+  return (
+    <div className={text.category}>{text}</div>
+  )
 }
 
 const Persons = ({persons, serachName, deletePerson}) => {
