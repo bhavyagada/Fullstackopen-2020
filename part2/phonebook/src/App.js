@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import personService from './services/persons'
 import './index.css'
 
@@ -66,7 +66,7 @@ const App = () => {
     
     if (persons.find(person => person.name === newPerson.name)) {
       if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
-        const id = persons.find(person => person.name === newName).id
+        const id = persons.find(person => person.name === newPerson.name).id
         const newObject = {
           name: newName,
           number: newNum
@@ -76,10 +76,10 @@ const App = () => {
             message:`Successfully added ${response.name} with number ${response.number}`, 
             category:'success'
           }
-          const newPerson = persons.filter(person => person.id !== id ? person : response)
-          setPersons(newPerson)
           setMessage(messageText.message)
           setTimeout(() => {setMessage({...messageText, message:null})}, 5000)
+          const newPerson = persons.filter(person => person.id !== id ? person : response)
+          setPersons(newPerson)
         }).catch(error => {
           const messageText = {
             message:`${newObject.name} has already been removed from the database`, 
@@ -92,15 +92,15 @@ const App = () => {
     }
     else {
       personService.create(newPerson).then(returnPerson => {
-        setPersons(persons.concat(returnPerson))
-        setNewName('')
-        setNewNumber('')
         const messageText = {
           message: `Successfully added ${returnPerson.name} with number ${returnPerson.number}`,
           category: 'success'
         }
         setMessage(messageText.message)
         setTimeout(() => {setMessage({...messageText ,message:null})}, 5000)
+        setPersons(persons.concat(returnPerson))
+        setNewName('')
+        setNewNumber('')
       }).catch(error => {
         const messageText = {
           message:`${error.name} has already been removed from the database`,
@@ -127,11 +127,11 @@ const App = () => {
   return (
     <div>
       <Notification text={messageText} />
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
       <Filter name={serachName} SearchChange={handleSearchChange} />
-      <h3>Add a new</h3>
+      <h2>Add a new</h2>
       <PersonFrom add={addPerson} name={newName} num={newNum} PChange={handlePersonChange} NChange={handleNumberChange} />
-      <h3>Numbers</h3>
+      <h2>Numbers</h2>
       <Persons persons={persons} serachName={serachName} deletePerson={handleDeletePerson}/>
     </div>
   )
